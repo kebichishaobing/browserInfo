@@ -26,8 +26,27 @@ var client = function() {
         version: null
     };
 
+    var system = {
+        win: false,
+        mac: false,
+        x11: false,
+
+        // mobile
+        iphone: false,
+        ipod: false,
+        ipad: false,
+        android: false,
+        nokiaN: false,
+        winMobile: false,
+
+        // game station
+        wii: false,
+        ps: false
+    };
+
     return {
         engine: engine,
-        browser: browser
+        browser: browser,
+        system: system
     }
 }();
