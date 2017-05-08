@@ -102,6 +102,69 @@ var browserInfo = function() {
     system.mac = p.indexOf('Mac') == 0;
     system.x11 = (p == 'X11') || (p.indexOf('Linux') == 0);
 
+    // check Windows OS
+    if (system.win) {
+        if (/Wind(?:dows)?([^do]{2})\s?(\d+\.\d+)?/.test(ua)) {
+            if (RegExp["$1"] == "NT") {
+                switch (RegExp["$2"]) {
+                    case "5.0":
+                        system.win = '2000';
+                        break;
+                    case "5.1":
+                        system.win = 'XP';
+                        break;
+                    case "6.0":
+                        system.win = 'Vista';
+                        break;
+                    case "6.1":
+                        system.win = '7';
+                        break;
+                    default:
+                        system.win = 'NT';
+                        break;
+                }
+            } else if (RegExp["$1"] == "9x") {
+                system.win = 'ME';
+            } else {
+                system.win = RegExp['$1'];
+            }
+        }
+    }
+
+    //mobile device
+    system.iphone = ua.indexOf('iPhone') > -1;
+    system.iPod = ua.indexOf('iPod') > -1;
+    system.iPad = ua.indexOf('iPad') > -1;
+    system.nokiaN = ua.indexOf('nokiaN') > -1;
+
+    // windows mobile
+    if (system.win === 'CE') {
+        system.windMoile = system.win;
+    } else if (system.win === 'Ph') {
+        if (/Windows Phone OS (\d+ \d+)/.test(ua)) {
+            system.win = 'Phone';
+            system.winMobile = parseFloat(RegExp['$1']);
+        }
+    }
+
+    // check IOS version
+    if (system.mac && ua.indexOf('mobile') > -1) {
+        if (/CPU (?:iPhone )?OS (\d+_\d+)/.test(ua)) {
+            system.ios = parseFloat(RegExp['$1'].replace('_', '.'));
+        } else {
+            system.ios = 2;
+        }
+    }
+
+    // check android version
+    if (/Android (\d+\.\d+)/.test(ua)) {
+        system.android = parseFloat(RegExp['$1']);
+    }
+
+    // game OS
+    system.wii = ua.indexOf('Wii') > -1;
+    system.ps = /playstation/i.test(ua);
+
     return {
         engine: engine,
         browser: browser,
